@@ -24,6 +24,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@tailwindcss/typography": "^0.5.10"
+		"@tailwindcss/typography": "^0.5.10",
+		"svelte-grid": "^5.1.2"
 	}
 }
