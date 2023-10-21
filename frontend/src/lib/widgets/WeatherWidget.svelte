@@ -76,7 +76,7 @@
           <p class="text-6xl font-semibold">{weatherInfo.main.temp}°C</p>
           <p class="">{weatherInfo.weather[0].main} | {weatherInfo.main.humidity}%</p>
         </div>
-        <div class="flex flex-col justify-center ml-auto">
+        <div class="flex flex-col justify-center ml-auto mb-3">
           <img
             class="w-20 object-none"
             src={`https://openweathermap.org/img/wn/${weatherInfo.weather[0].icon}@2x.png`}

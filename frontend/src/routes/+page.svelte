@@ -11,15 +11,3 @@
     Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation
   </p>
 </div>
-<div class="mockup-phone border-primary">
-  <div class="camera" />
-  <div class="display">
-    <div class="artboard phone-1">
-      <WeatherWidget/>
-    </div>
-  </div>
-</div>
-<div class="artboard phone-1">
-    <IAQWidget></IAQWidget>
-
-</div>
