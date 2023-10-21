@@ -14,4 +14,12 @@
   </p>
 </div>
 
-<DragAndDrop components={[GarbageWidget, RoadworksWidget, WeatherWidget ]} />
+<DragAndDrop
+  components={[
+    GarbageWidget,
+    RoadworksWidget,
+    WeatherWidget,
+    IAQWidget,
+    JobsWidget,
+  ]}
+/>
