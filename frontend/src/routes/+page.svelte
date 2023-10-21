@@ -1,3 +1,7 @@
+<script>
+    import GarbageWidget from "$lib/widgets/GarbageWidget.svelte";
+</script>
+
 <div class="prose">
     <h1>Welcome to SvelteKit</h1>
     <p>
