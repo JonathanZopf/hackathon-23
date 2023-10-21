@@ -241,6 +241,9 @@ void setupWebserver() {
     String jsonString;
     serializeJson(jsonDoc, jsonString);
 
+    server.sendHeader("Access-Control-Allow-Origin", "*"); // Allow requests from any origin
+    server.sendHeader("Access-Control-Max-Age", "10000");   // Cache preflight response for 10 seconds
+
     // Send JSON response
     server.send(200, "application/json", jsonString);
   });
