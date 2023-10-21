@@ -39,7 +39,7 @@
     }
 </script>
 
-<div class="card card-bordered">
+<div class="card card-bordered card-compact">
     <div class="card-body">
         <h2 class="card-title">Nächste Verbindung</h2>
         <div

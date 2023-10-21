@@ -3,8 +3,9 @@
     import Grid from "svelte-grid";
     // @ts-ignore
     import gridHelp from "svelte-grid/build/helper/index.mjs";
+    import GarbageWidget from "$lib/widgets/GarbageWidget.svelte";
+    import PublicTransportWidget from "$lib/widgets/PublicTransportWidget.svelte";
 
-    const COL = 2;
     const cols = [[1000, 1], [5000, 2]]
 
     let columnWidth:number;
@@ -18,7 +19,7 @@
         throw new Error("No column count found");
     }
 
-    function createItem(x:number, y:number) {
+    function createItem(x:number, y:number, component:any) {
         return {
             1: gridHelp.item({
                 x: 0,
@@ -35,17 +36,18 @@
                 resizable: false,
             }),
             id: Math.random().toString().substring(2),
+            data: component,
         }
     }
 
     let items = [
-        createItem(0, 0),
-        createItem(1, 0),
+        createItem(0, 0, PublicTransportWidget),
+        createItem(1, 0, GarbageWidget),
     ]
 
     function addItemToGrid() {
         const columnCount = getColumnCount();
-        let newItem = createItem(0, 0);
+        let newItem = createItem(0, 0, GarbageWidget);
         let freeSpace = gridHelp.findSpace(newItem, items, columnCount);
 
         newItem = {
@@ -88,7 +90,7 @@
             //Check if has no top neighbor (is free floating)
             //@ts-ignore
             if (item[columnCount].y > getMaxY(item, columnCount)) {
-                //Limit y and force refresh
+                //Limit y and force 0refresh
                 //@ts-ignore
                 item[columnCount].y = getMaxY(item, columnCount);
                 items = items;
@@ -97,8 +99,8 @@
     }
 </script>
 <div bind:clientWidth={columnWidth}>
-    <Grid {cols} bind:items={items} let:dataItem rowHeight={50} gap={[10, 10]} on:change="{checkIfFreeFloating}">
-        <div class="dragger bg-teal-400 text-center text leading-10">{dataItem.id}</div>
+    <Grid {cols} bind:items={items} let:dataItem rowHeight={250} gap={[10, 10]} on:change="{checkIfFreeFloating}">
+        <svelte:component this="{dataItem.data}"></svelte:component>
     </Grid>
 </div>
 <button class="btn btn-circle" on:click={addItemToGrid}>
