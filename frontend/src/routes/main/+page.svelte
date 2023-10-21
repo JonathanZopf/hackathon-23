@@ -4,64 +4,30 @@
     // @ts-ignore
     import gridHelp from "svelte-grid/build/helper/index.mjs";
 
-    const generate_id = () => {
-        return Math.random().toString();
+    function createItem(x:number, y:number) {
+        return {
+            2: gridHelp.item({
+                x: x,
+                y: y,
+                w: 1,
+                h: 1,
+                resizable: false,
+            }),
+            id: Math.random().toString().substring(2),
+        }
     }
 
     let items = [
-        {
-            2: gridHelp.item({
-                x: 0,
-                y: 0,
-                w: 1,
-                h: 1,
-            }),
-            id: generate_id(),
-        },
-
-        {
-            2: gridHelp.item({
-                x: 1,
-                y: 0,
-                w: 1,
-                h: 1,
-            }),
-            id: generate_id(),
-        },
-
-        {
-            2: gridHelp.item({
-                x: 0,
-                y: 1,
-                w: 1,
-                h: 1,
-            }),
-            id: generate_id(),
-        },
-
-        {
-            2: gridHelp.item({
-                x: 1,
-                y: 1,
-                w: 1,
-                h: 1,
-            }),
-            id: generate_id(),
-        },
+        createItem(0, 0),
+        createItem(1, 0),
     ]
 
     const cols = [[0, 2]]
 
+
+
     function addItemToGrid() {
-        let newItem = {
-            2: gridHelp.item({
-                x: 0,
-                y: 0,
-                w: 1,
-                h: 1,
-            }),
-            id: generate_id(),
-        }
+        let newItem = createItem(0, 0);
         let freeSpace = gridHelp.findSpace(newItem, items, 2);
 
         newItem = {
