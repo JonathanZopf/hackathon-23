@@ -22,7 +22,6 @@
 
 #include <WiFi.h>
 #include <Wire.h>
-#include <WebServer.h>
 #include <ArduinoJson.h>
 #include <bsec2.h>
 #include <HTTPClient.h>
@@ -36,10 +35,9 @@
 const char* WIFI_SSID = "ENO"; 
 const char* WIFI_PASSWORD = "02826ENO@innolabs!";
 const String SERVER_URL = "http://213.165.76.12:10000/post-sensor-data";
-const long SEND_TO_DWEET_INTERVAL = 1000; // Send POST request every 60 seconds
+const long SEND_TO_PROXY_INTERVAL = 1000; // Send POST request every 60 seconds
 
 Bsec2 envSensor;
-WebServer server(80);
 HTTPClient http;
 unsigned long previousMillis = 0;
 
@@ -83,11 +81,9 @@ void setupWifi(void);
 void setupBME688(void);
 
 /**
- * @brief Setsup a webserver that can be queried via get to receive the last sensor readings
+ * @brief : Sends the data to an intermediate webserver json proxy (fully under our control) that will then serve the requests of the clients
  */
-void setupWebserver(void);
-
-void sendDataToDweet(void);
+void sendDataToProxy(void);
 
 // #################### IMPLEMENTATION ####################
 
@@ -98,7 +94,6 @@ void setup() {
 
   setupWifi();
   setupBME688();
-  setupWebserver();
 }
 
 void loop() {
@@ -110,14 +105,14 @@ void loop() {
         checkBsecStatus(envSensor);
     }
 
-    sendDataToDweet();
+    sendDataToProxy();
 }
 
-void sendDataToDweet() {
+void sendDataToProxy() {
 
   unsigned long currentMillis = millis();
 
-  if (currentMillis - previousMillis >= SEND_TO_DWEET_INTERVAL) {
+  if (currentMillis - previousMillis >= SEND_TO_PROXY_INTERVAL) {
     // Save the last time a request was sent
     previousMillis = currentMillis;
    // Create a JSON object and add sensor data
@@ -260,32 +255,4 @@ void checkBsecStatus(Bsec2 bsec) {
     else if (bsec.sensor.status > BME68X_OK) {
         halt("BME68X warning code : " + String(bsec.sensor.status));
     }
-}
-
-void setupWebserver() {
-  // Define API endpoint to serve sensor data in JSON format
-  server.on("/sensor-data", HTTP_GET, []() {
-    // Create a JSON object and add sensor data
-    DynamicJsonDocument jsonDoc(256); // Adjust the size according to your data
-    jsonDoc["iaq"] = iaq;
-    jsonDoc["temperature"] = temperature;
-    jsonDoc["pressure"] = pressure;
-    jsonDoc["humidity"] = humidity;
-    jsonDoc["gasResistance"] = gasResistance;
-    jsonDoc["stabilizationStatus"] = stabilizationStatus;
-    jsonDoc["runInStatus"] = runInStatus;
-
-    // Serialize JSON to a string
-    String jsonString;
-    serializeJson(jsonDoc, jsonString);
-
-    server.sendHeader("Access-Control-Allow-Origin", "*"); // Allow requests from any origin
-    server.sendHeader("Access-Control-Max-Age", "10000");   // Cache preflight response for 10 seconds
-
-    // Send JSON response
-    server.send(200, "application/json", jsonString);
-  });
-
-  server.begin();
-  Serial.println("HTTP server started");
 }

@@ -3,14 +3,14 @@
 <script>
     const maxAIQReading = 500;
     const airQualityInfo = {
-        "Excellent": "bg-success",
-        "Good": "bg-success",
-        "Lightly Polluted": "bg-warning",
-        "Moderately Polluted": "bg-warning",
-        "Heavily Polluted": "bg-error",
-        "Severely Polluted": "bg-error-content",
-        "Extremely Polluted": "bg-error-content",
-        "Out of Range": "bg-error-content"
+        "Excellent": "border-success",
+        "Good": "border-success",
+        "Lightly Polluted": "border-warning",
+        "Moderately Polluted": "border-warning",
+        "Heavily Polluted": "border-error",
+        "Severely Polluted": "border-error-content",
+        "Extremely Polluted": "border-error-content",
+        "Out of Range": "border-error-content"
     };
 
     let airQuality = null;
