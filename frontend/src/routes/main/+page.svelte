@@ -5,6 +5,9 @@
     import gridHelp from "svelte-grid/build/helper/index.mjs";
     import GarbageWidget from "$lib/widgets/GarbageWidget.svelte";
     import PublicTransportWidget from "$lib/widgets/PublicTransportWidget.svelte";
+    import WeatherWidget from "$lib/widgets/WeatherWidget.svelte";
+    import RoadworksWidget from "$lib/widgets/RoadworksWidget.svelte";
+    import IAQWidget from "$lib/widgets/IAQWidget.svelte";
 
     const cols = [[600, 1], [5000, 2]]
 
@@ -98,11 +101,40 @@
         }
     }
 </script>
-<div bind:clientWidth={columnWidth}>
-    <Grid {cols} bind:items={items} let:dataItem rowHeight={250} gap={[10, 10]} on:change="{checkIfFreeFloating}">
-        <svelte:component this="{dataItem.data}"></svelte:component>
-    </Grid>
+<div class="drawer">
+    <input id="my-drawer" type="checkbox" class="drawer-toggle" />
+    <div class="drawer-content">
+        <div bind:clientWidth={columnWidth}>
+            <Grid {cols} bind:items={items} let:dataItem rowHeight={250} gap={[10, 10]} on:change="{checkIfFreeFloating}">
+                <svelte:component this="{dataItem.data}"></svelte:component>
+            </Grid>
+        </div>
+        <div class="flex flex-col">
+        <label for="my-drawer" class="btn btn-circle swap swap-rotate self-end">
+
+            <!-- this hidden checkbox controls the state -->
+            <input type="checkbox" />
+
+            <!-- hamburger icon -->
+            <svg class="swap-off fill-current" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512"><path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"/></svg>
+
+            <!-- close icon -->
+            <svg class="swap-on fill-current" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512"><polygon points="400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49"/></svg>
+
+        </label>
+        </div>
+    </div>
+    <div class="drawer-side">
+        <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
+        <div class="menu p-4 w-1/3 min-h-full bg-base-100 text-base-content">
+            <!-- Sidebar content here -->
+            <div class="flex flex-col gap-4">
+                <GarbageWidget on:click={addItemToGrid}></GarbageWidget>
+                <PublicTransportWidget></PublicTransportWidget>
+                <WeatherWidget></WeatherWidget>
+                <RoadworksWidget></RoadworksWidget>
+                <IAQWidget></IAQWidget>
+            </div>
+        </div>
+    </div>
 </div>
-<button class="btn btn-circle" on:click={addItemToGrid}>
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-</button>
