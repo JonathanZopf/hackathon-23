@@ -22,6 +22,8 @@
 
 #include <WiFi.h>
 #include <Wire.h>
+#include <WebServer.h>
+#include <ArduinoJson.h>
 #include <bsec2.h>
 
 // #################### MACROS ####################
@@ -32,6 +34,16 @@
 const char* WIFI_SSID = "ENO"; 
 const char* WIFI_PASSWORD = "02826ENO@innolabs!";
 Bsec2 envSensor;
+WebServer server(80);
+
+// collected data
+float iaq = 0.0;
+float temperature = 0.0;
+float pressure = 0.0;
+float humidity = 0.0;
+float gasResistance = 0.0;
+float stabilizationStatus = 0.0;
+float runInStatus = 0.0;
 
 // #################### FUNCTION DECLARATIONS ####################
 /**
@@ -63,6 +75,11 @@ void setupWifi(void);
  */
 void setupBME688(void);
 
+/**
+ * @brief Setsup a webserver that can be queried via get to receive the last sensor readings
+ */
+void setupWebserver(void);
+
 // #################### IMPLEMENTATION ####################
 
 void setup() {
@@ -72,6 +89,7 @@ void setup() {
 
   setupWifi();
   setupBME688();
+  setupWebserver();
 }
 
 void loop() {
@@ -82,6 +100,8 @@ void loop() {
     if (!envSensor.run()) {
         checkBsecStatus(envSensor);
     }
+
+    server.handleClient(); // Handle client requests
 }
 
 void setupWifi() {
@@ -93,7 +113,9 @@ void setupWifi() {
       Serial.println("Connecting to WiFi..");
       Serial.println("Status:" + WiFi.status());
   }
-  Serial.println("Connected to the WiFi network");
+  
+  Serial.print("Connected to WiFi. IP address: ");
+  Serial.println(WiFi.localIP());
 }
 
 void setupBME688() {
@@ -146,6 +168,15 @@ void newDataCallback(const bme68xData data, const bsecOutputs outputs, Bsec2 bse
         return;
     }
 
+    // Store sensor data in global variables
+    iaq = outputs.output[0].signal;
+    temperature = outputs.output[1].signal;
+    pressure = outputs.output[2].signal;
+    humidity = outputs.output[3].signal;
+    gasResistance = outputs.output[4].signal;
+    stabilizationStatus = outputs.output[5].signal;
+    runInStatus = outputs.output[6].signal;
+
     Serial.println("BSEC outputs:\n\ttimestamp = " + String((int) (outputs.output[0].time_stamp / INT64_C(1000000))));
     for (uint8_t i = 0; i < outputs.nOutputs; i++) {
         const bsecData output  = outputs.output[i];
@@ -191,4 +222,29 @@ void checkBsecStatus(Bsec2 bsec) {
     else if (bsec.sensor.status > BME68X_OK) {
         halt("BME68X warning code : " + String(bsec.sensor.status));
     }
+}
+
+void setupWebserver() {
+  // Define API endpoint to serve sensor data in JSON format
+  server.on("/sensor-data", HTTP_GET, []() {
+    // Create a JSON object and add sensor data
+    DynamicJsonDocument jsonDoc(256); // Adjust the size according to your data
+    jsonDoc["iaq"] = iaq;
+    jsonDoc["temperature"] = temperature;
+    jsonDoc["pressure"] = pressure;
+    jsonDoc["humidity"] = humidity;
+    jsonDoc["gasResistance"] = gasResistance;
+    jsonDoc["stabilizationStatus"] = stabilizationStatus;
+    jsonDoc["runInStatus"] = runInStatus;
+
+    // Serialize JSON to a string
+    String jsonString;
+    serializeJson(jsonDoc, jsonString);
+
+    // Send JSON response
+    server.send(200, "application/json", jsonString);
+  });
+
+  server.begin();
+  Serial.println("HTTP server started");
 }
