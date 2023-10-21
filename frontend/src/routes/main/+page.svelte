@@ -6,13 +6,13 @@
     import GarbageWidget from "$lib/widgets/GarbageWidget.svelte";
     import PublicTransportWidget from "$lib/widgets/PublicTransportWidget.svelte";
 
-    const cols = [[1000, 1], [5000, 2]]
+    const cols = [[600, 1], [5000, 2]]
 
     let columnWidth:number;
 
     function getColumnCount() {
         for (let item in cols) {
-            if (columnWidth < cols[item][0]) {
+            if (columnWidth <= cols[item][0]) {
                 return cols[item][1];
             }
         }
@@ -23,7 +23,7 @@
         return {
             1: gridHelp.item({
                 x: 0,
-                y: y,
+                y: 2 * y + x,
                 w: 1,
                 h: 1,
                 resizable: false,
@@ -69,7 +69,7 @@
      * @param columnCount Number of columns in the grid
      */
     function getMaxY(item:any, columnCount:number) {
-        let maxY = 0;
+        let maxY = -1; //If there is no item maxY is -1
         for (let i = 0; i < items.length; i++) {
             if (items[i].id === item.id) continue;
             //@ts-ignore
@@ -78,7 +78,7 @@
                 maxY = items[i][columnCount].y;
             }
         }
-        return maxY + 1;
+        return maxY;
     }
 
     /**
@@ -90,9 +90,9 @@
             //Check if has no top neighbor (is free floating)
             //@ts-ignore
             if (item[columnCount].y > getMaxY(item, columnCount)) {
-                //Limit y and force 0refresh
+                //Limit y and force refresh
                 //@ts-ignore
-                item[columnCount].y = getMaxY(item, columnCount);
+                item[columnCount].y = getMaxY(item, columnCount) + 1
                 items = items;
             }
         }
