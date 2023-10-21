@@ -55,7 +55,7 @@
           </select>
         </div>
         {#await roadWorks}
-          <span class="loading loading-spinner loading-xs" />
+          <span class="loading loading-spinner loading-lg self-center" />
         {:then roadWorks}
           <ul class="list-none list-outside p-0">
             {#each roadWorks.slice(0, 3) as roadwork}

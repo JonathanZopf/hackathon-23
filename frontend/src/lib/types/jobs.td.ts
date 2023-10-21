@@ -13,7 +13,7 @@ export interface Job {
             lon: number
         }
     }
-    externeURL: string
+    externeUrl: string
     aktuelleVeroeffentlichungsDatum: Date
     eintrittsDatum: Date
 }

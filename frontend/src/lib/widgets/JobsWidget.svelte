@@ -3,7 +3,15 @@
   import type { Job, Jobs } from "$lib/types/jobs.td";
   const baseURL = "https://rest.arbeitsagentur.de/jobboerse/jobsuche-service";
   let accessToken: string;
-  let jobs: Jobs;
+  let steve: Jobs;
+  let jobType: number;
+
+  const jobTypes = {
+    1: "Vollzeit",
+    2: "Selbständig",
+    4: "Ausbildung/Duales Studium",
+    34: "Praktikum"
+  }
 
   async function fetchAccessToken() {
     const response = await fetch(
@@ -19,9 +27,9 @@
     return response.access_token as string;
   }
 
-  async function fetchJobs(token: string) {
+  async function fetchJobs(token: string, type: number = 1) {
     const response = await fetch(
-      `${baseURL}/pc/v4/app/jobs?angebotsart=1&wo=Görlitz&umkreis=200`,
+      `${baseURL}/pc/v4/app/jobs?angebotsart=${type}&wo=Görlitz&umkreis=200`,
       {
         headers: {
           OAuthAccesstoken: accessToken,
@@ -33,27 +41,42 @@
 
   onMount(async () => {
     accessToken = await fetchAccessToken();
-    jobs = await fetchJobs(accessToken);
-    console.log(jobs);
+    steve = await fetchJobs(accessToken);
+    console.log(steve);
   });
 </script>
 
 <div class="card w-96 bg-base-100 shadow-xl">
   <div class="card-body">
-    <h2 class="card-title">Jobs</h2>
-    {#if jobs}
-      <ul class="list-none ml-0">
-        {#each jobs.stellenangebote.slice(0, 3) as job}
-          <li class="p-1">
-            <div class="flex flex-row justify-center">
-              <p>{job.titel}</p>
-              <p>{job.arbeitgeber}</p>
+    {#if steve}
+      <div class="flex flex-row align-center gap-5">
+        <h2 class="card-title m-0">Jobs</h2>
+        <div class="badge badge-success float-rigt self-center mt-1">
+          {steve.stellenangebote.length}
+        </div>
+        <select class="select select-sm self-center flex-auto"
+                bind:value={jobType}
+                on:change={async () => {
+                  steve = await fetchJobs(accessToken, jobType);
+                }}>
+              {#each Object.keys(jobTypes) as type}
+                <option value={type}>{jobTypes[type]}</option>
+              {/each}
+              </select>
+      </div>
+      <ul class="list-none list-outside p-0">
+        {#each steve.stellenangebote.slice(0, 3) as job}
+          <li class="ml-0">
+            <div class="flex flex-col align-left">
+              <div class="flex-1 truncate">{job.titel}</div>
+              <a class="text-sm font-semibold underline" href={job.externeUrl}>{job.arbeitgeber}</a>
             </div>
           </li>
+            <div class="divider lg:divider-horizontal m-0"></div> 
         {/each}
       </ul>
     {:else}
-      <span class="loading flex-1 loading-spinner loading-xs" />
+      <span class="loading loading-spinner loading-ls self-center" />
     {/if}
   </div>
 </div>
