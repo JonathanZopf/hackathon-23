@@ -25,6 +25,8 @@
 #include <WebServer.h>
 #include <ArduinoJson.h>
 #include <bsec2.h>
+#include <HTTPClient.h>
+
 
 // #################### MACROS ####################
 #define ERROR_DUR   1000
@@ -33,8 +35,13 @@
 
 const char* WIFI_SSID = "ENO"; 
 const char* WIFI_PASSWORD = "02826ENO@innolabs!";
+const String SERVER_URL = "http://213.165.76.12:10000/post-sensor-data";
+const long SEND_TO_DWEET_INTERVAL = 1000; // Send POST request every 60 seconds
+
 Bsec2 envSensor;
 WebServer server(80);
+HTTPClient http;
+unsigned long previousMillis = 0;
 
 // collected data
 float iaq = 0.0;
@@ -80,6 +87,8 @@ void setupBME688(void);
  */
 void setupWebserver(void);
 
+void sendDataToDweet(void);
+
 // #################### IMPLEMENTATION ####################
 
 void setup() {
@@ -101,7 +110,36 @@ void loop() {
         checkBsecStatus(envSensor);
     }
 
+    sendDataToDweet();
+}
+
+void sendDataToDweet() {
+
+  unsigned long currentMillis = millis();
+
+  if (currentMillis - previousMillis >= SEND_TO_DWEET_INTERVAL) {
+    // Save the last time a request was sent
+    previousMillis = currentMillis;
+   // Create a JSON object and add sensor data
+    DynamicJsonDocument jsonDoc(256); // Adjust the size according to your data
+    jsonDoc["iaq"] = iaq;
+    jsonDoc["temperature"] = temperature;
+    jsonDoc["pressure"] = pressure;
+    jsonDoc["humidity"] = humidity;
+    jsonDoc["gasResistance"] = gasResistance;
+    jsonDoc["stabilizationStatus"] = stabilizationStatus;
+    jsonDoc["runInStatus"] = runInStatus;
+
+    // Serialize JSON to a string
+    String jsonString;
+    serializeJson(jsonDoc, jsonString);
+
     server.handleClient(); // Handle client requests
+
+    http.begin(SERVER_URL);
+    http.addHeader("Content-Type", "application/json");
+    http.POST(jsonString);
+  }
 }
 
 void setupWifi() {

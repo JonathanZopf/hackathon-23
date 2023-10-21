@@ -1,0 +1,15 @@
+[Unit]
+Description=Data Proxy
+After=network.target
+
+[Service]
+Type=simple
+User=server_runner
+Group=project_owner
+WorkingDirectory=/opt/DataProxy/run
+ExecStart=/opt/DataProxy/main
+Restart=on-failure
+RestartSec=5   # Specifies a 5-second delay between restarts
+
+[Install]
+WantedBy=multi-user.target
