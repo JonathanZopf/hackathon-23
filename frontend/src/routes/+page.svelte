@@ -1,7 +1,8 @@
 <script>
-  import GarbageWidget from "$lib/widgets/GarbageWidget.svelte";
-  import Roadworks from "$lib/widgets/RoadworksWidget.svelte";
-  import WeatherWidget from "$lib/widgets/WeatherWidget.svelte";
+    import GarbageWidget from "$lib/widgets/GarbageWidget.svelte";
+    import Roadworks from "$lib/widgets/RoadworksWidget.svelte";
+    import WeatherWidget from "$lib/widgets/WeatherWidget.svelte";
+    import IAQWidget from "$lib/widgets/IAQWidget.svelte";
 </script>
 
 <div class="prose">
@@ -17,4 +18,8 @@
       <WeatherWidget/>
     </div>
   </div>
+</div>
+<div class="artboard phone-1">
+    <IAQWidget></IAQWidget>
+
 </div>
