@@ -20,6 +20,7 @@
       },
       (e) => {
         error = e;
+        isFetching = false;
       }
     );
   });
@@ -39,9 +40,9 @@
   <div class="card-body">
     <h2 class="card-title">Weather</h2>
     {#if isFetching}
-      <span class="loading flex-1 loading-spinner loading-xs" />
+      <span class="loading flex-1 loading-spinner loading-lg self-center" />
     {:else if error}
-      <p class="p-5">{error.message}</p>
+      <p class="p-5 text-red-600">{error.message}</p>
     {:else if weatherInfo}
       <div class="flex flex-row justify-start align-top">
         <div class="flex flex-col space-y-3 justify-center self-center">

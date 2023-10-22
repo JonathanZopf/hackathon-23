@@ -15,7 +15,6 @@
     const response = await fetch(`${baseURL}/${road}/services/roadworks`).then(
       (data) => data.json()
     );
-    console.log(response.roadworks);
     return response.roadworks;
   }
 
@@ -39,7 +38,7 @@
     <div class="card card-compact bg-slate-600 text-primary-content">
       <div class="card-body">
         <div class="flex flex-row gap-5">
-          <h2 class="card-title my-0">Roadwork</h2>
+          <h2 class="card-title my-0">Baustellen</h2>
           <select
             class="select select-sm align-middle flex-auto"
             bind:value={road}
