@@ -65,7 +65,7 @@
                 +{Math.round(getRoadWorkDelay(roadwork))} Minuten
               </div>
             </div>
-            <div class="text-xs text-gray-300 ml-1 mt-1">
+            <div class="text-xs">
               {roadwork.subtitle}
             </div>
           </li>
