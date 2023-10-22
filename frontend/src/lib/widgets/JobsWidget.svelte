@@ -8,13 +8,37 @@
     accessToken,
     isInitialized,
   } from "$lib/stores/JobsStore";
+  import type { Jobs } from "$lib/types/jobs.td";
   import { onMount } from "svelte";
 
   onMount(async () => {
-    $accessToken =
-      localStorage.getItem("accessToken") ?? (await fetchAccessToken());
-    localStorage.setItem("accessToken", $accessToken);
-    $steve = await fetchJobs($jobType);
+    if (location.hostname === "hostname") {
+      $accessToken = await fetchAccessToken();
+      localStorage.setItem("accessToken", $accessToken);
+      $steve = await fetchJobs($jobType);
+    }
+    $steve = {
+      stellenangebote: [
+        {
+          beruf: "Eisenbahner/in - Betrieb. - Lok. u. Transp. (Ausb. bis 2022)",
+          titel: "Triebfahrzeugführer (m/w/d) für unsere Standorte Dresden und",
+          arbeitgeber: "Netinera Deutschland Gmbh",
+          externeUrl: "http://anzeigen.schienenjobs.de/?anzeige=2202479020",
+        },
+        {
+          beruf: "Zerspanungsmechaniker/in",
+          titel: "Zerspanungsmechaniker (m/w/d) Frästechnik in Tagschicht",
+          arbeitgeber: "Akzent Personaldienstleistungen GmbH",
+        },
+        {
+          beruf: "Anwendungsprogrammierer/in",
+          titel: "Svelte Developer (m/w/d)",
+          arbeitgeber: "NAVAX Software",
+          externeUrl:
+            "https://www.get-in-it.de/jobsuche/p235547?utm_source=arbeitsagentur&utm_medium=cpc&utm_campaign=launch-basic",
+        },
+      ],
+    } as Jobs;
     $isInitialized = true;
   });
 </script>
@@ -40,11 +64,11 @@
         </select>
       </div>
       <ul class="list-none list-outside p-0">
-        {#each $steve.stellenangebote?.slice(0, 3) as job}
+        {#each $steve.stellenangebote as job}
           <li class="mt-1">
             <div class="flex flex-col align-left">
               <div class="flex-1 truncate">{job.titel}</div>
-              <a class="text-sm font-semibold underline" href={job.externeUrl}
+              <a class="text-sm font-semibold underline" href={job.externeUrl} target="_blank"
                 >{job.arbeitgeber}</a
               >
               <div class="divider m-0" />
