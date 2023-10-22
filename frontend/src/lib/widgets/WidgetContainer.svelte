@@ -9,10 +9,9 @@
     }
 </script>
 
-<div
-    class="card card-compact card-bordered"
-    draggable={true}
-    on:dragstart={dragStart}
->
-    <slot />
+<!-- svelte-ignore a11y-no-static-element-interactions -->
+<div class="card card-bordered" draggable={true} on:dragstart={dragStart}>
+    <div class="card-body">
+        <slot />
+    </div>
 </div>
