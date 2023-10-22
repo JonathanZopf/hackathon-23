@@ -21,7 +21,7 @@
 
 <div class="card bg-gradient-to-b from-green-300 to-green-500">
   <div class="card-body">
-    {#if $steve}
+    {#if $isInitialized}
       <div class="flex flex-row align-center gap-5">
         <h2 class="card-title m-0">Jobs</h2>
         <div class="badge badge-success float-rigt self-center mt-1">
