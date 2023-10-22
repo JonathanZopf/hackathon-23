@@ -6,6 +6,7 @@
   import JobsWidget from "$lib/widgets/JobsWidget.svelte";
   import PublicTransportWidget from "$lib/widgets/PublicTransportWidget.svelte";
   import DragAndDrop from "$lib/DragAndDrop.svelte";
+  import NewsWidget from "$lib/widgets/NewsWidget.svelte";
 
   let gridAddWidgetHandler: (widget: any) => void;
 
@@ -16,6 +17,7 @@
     Luftqualität: IAQWidget,
     Arbeitsmarkt: JobsWidget,
     ÖPNV: PublicTransportWidget,
+    NewsWidget: NewsWidget,
   } as const;
 
   function keys<T extends Record<any, any>>(obj: T): (keyof T)[] {

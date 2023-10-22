@@ -10,3 +10,6 @@ export type Article = {
 }
 
 export const articles = writable([] as Article[])
+export const data = writable({
+    news: [] as Article[]
+})
