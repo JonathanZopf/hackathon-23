@@ -34,7 +34,7 @@
 
 const char* WIFI_SSID = "ENO"; 
 const char* WIFI_PASSWORD = "02826ENO@innolabs!";
-const String SERVER_URL = "http://213.165.76.12:10000/post-sensor-data";
+const String SERVER_URL = "https://app-side.net:10000/post-sensor-data";
 const long SEND_TO_PROXY_INTERVAL = 1000; // Send POST request every 60 seconds
 
 Bsec2 envSensor;
@@ -128,8 +128,6 @@ void sendDataToProxy() {
     // Serialize JSON to a string
     String jsonString;
     serializeJson(jsonDoc, jsonString);
-
-    server.handleClient(); // Handle client requests
 
     http.begin(SERVER_URL);
     http.addHeader("Content-Type", "application/json");
