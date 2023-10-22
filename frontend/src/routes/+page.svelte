@@ -9,6 +9,8 @@
   import DragAndDrop from "$lib/DragAndDrop.svelte";
 
   let gridAddWidgetHandler: (widget: any) => void;
+  let drawerOpen = false;
+  $: console.log({ drawerOpen });
 
   const supportedWidgets = {
     Abfallkalender: GarbageWidget,
@@ -23,11 +25,15 @@
   function keys<T extends Record<any, any>>(obj: T): (keyof T)[] {
     return Object.keys(obj);
   }
-
 </script>
 
 <div class="drawer">
-  <input id="my-drawer" type="checkbox" class="drawer-toggle" />
+  <input
+    id="my-drawer"
+    type="checkbox"
+    class="drawer-toggle"
+    bind:checked={drawerOpen}
+  />
   <div class="drawer-content">
     <div class="flex flex-col">
       <label for="my-drawer" class="btn btn-circle swap swap-rotate self-end">
@@ -61,30 +67,34 @@
     </div>
     <div class="mx-4">
       <DragAndDrop
-        components={Object.values(supportedWidgets)}
+        components={[]}
         bind:addWidgetHandler={gridAddWidgetHandler}
       />
     </div>
   </div>
   <div class="drawer-side">
     <label for="my-drawer" aria-label="close sidebar" class="drawer-overlay" />
-    <div class="p-4 w-1/3 min-h-full bg-base-100 text-base-content prose">
-      <h2>Widgets Hinzufügen</h2>
-      <div class="divider" />
-      <!-- Sidebar content here -->
-      {#each keys(supportedWidgets) as widgetName}
-        <div class="flex flex-row items-center px-5">
-          <span class="text-xl">{widgetName}</span>
-          <button
-            class="btn btn-neutral ml-auto shadow hover:shadow-lg"
-            on:click={() => gridAddWidgetHandler(supportedWidgets[widgetName])}
-          >
-            Hinzufügen
-          </button>
-        </div>
+    {#if drawerOpen}
+      <div
+        class="p-4 w-3/4 md:w-1/3 min-h-full bg-base-100 text-base-content prose"
+      >
+        <h2>Widgets Hinzufügen</h2>
         <div class="divider" />
-      {/each}
-    </div>
+        <!-- Sidebar content here -->
+        {#each keys(supportedWidgets) as widgetName}
+          <div class="flex flex-row items-center px-5">
+            <span class="text-xl">{widgetName}</span>
+            <button
+              class="btn btn-neutral ml-auto shadow hover:shadow-lg"
+              on:click={() =>
+                gridAddWidgetHandler(supportedWidgets[widgetName])}
+            >
+              Hinzufügen
+            </button>
+          </div>
+          <div class="divider" />
+        {/each}
+      </div>
+    {/if}
   </div>
 </div>
-
