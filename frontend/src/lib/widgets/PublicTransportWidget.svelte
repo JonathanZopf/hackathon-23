@@ -1,13 +1,13 @@
 <script lang="ts">
     import { relativeTime, sortByTime } from "$lib/dateUtils";
+    import {start, stop, DISABLED, connections} from "$lib/stores/PublicTransportStore";
+    import type { Connection } from "$lib/stores/PublicTransportStore";
 
     const STOPS = ["Görlitz", "Bautzen", "Dresden-Neustadt", "Dresden Hbf"];
     let stopSelectState: "collapse-open" | "collapse-closed" =
         "collapse-closed";
-    const DISABLED = "__disabled__";
-    let start: string = DISABLED;
-    let stop: string = DISABLED;
-    $: connections = stopsUpdated(start, stop);
+
+    $connections = stopsUpdated($start, $stop);
 
     function toggleStopCollapse() {
         stopSelectState =
@@ -15,8 +15,6 @@
                 ? "collapse-closed"
                 : "collapse-open";
     }
-
-    type Connection = { name: string; time: Date };
 
     function stopsUpdated(start: string, stop: string): Connection[] {
         if (start === DISABLED || stop === DISABLED) return [];
@@ -46,16 +44,17 @@
             class="collapse collapse-arrow border border-base-300 bg-base-200 {stopSelectState}"
         >
             <div class="collapse-title" on:click={toggleStopCollapse}>
-                {#if start === DISABLED || stop === DISABLED}
+                {#if $start === DISABLED || $stop === DISABLED}
                     Start / Stop
                 {:else}
-                    {start} / {stop}
+                    {$start} / {$stop}
                 {/if}
             </div>
             <div class="collapse-content flex flex-col gap-2">
                 <select
                     name="start-select"
-                    bind:value={start}
+                    bind:value={$start}
+                    on:change={() => $connections = stopsUpdated($start, $stop)}
                     class="select select-sm shadow-sm"
                 >
                     <option value={DISABLED} disabled selected>
@@ -68,7 +67,8 @@
                 <select
                     name="destination-select"
                     class="select select-sm shadow-sm"
-                    bind:value={stop}
+                    bind:value={$stop}
+                    on:change={() => $connections = stopsUpdated($start, $stop)}
                 >
                     <option value={DISABLED} disabled selected>
                         Ziel auswählen
@@ -80,7 +80,7 @@
             </div>
         </div>
         <ol>
-            {#each connections as conn}
+            {#each $connections as conn}
                 <li>
                     <div class="flex flex-row">
                         <span class="badge badge-neutral">{conn.name}</span>

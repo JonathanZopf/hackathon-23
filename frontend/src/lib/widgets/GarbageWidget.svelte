@@ -2,10 +2,9 @@
     // @ts-ignore
     import ical from "ical.js";
     import { onMount } from "svelte";
-
-    type Entry = { binType: string; date: Date };
-    let entries: Entry[] = [];
-
+    import { entries } from '$lib/stores/GarbageStore'
+    import type { Entry } from '$lib/stores/GarbageStore'
+    
     onMount(async () => {
         const response = await fetch("/garbage-dates.ics");
         const icalString = await response.text();
@@ -18,7 +17,7 @@
             const binType = e.getFirstPropertyValue("summary");
             return { date, binType } as Entry;
         });
-        entries = asEntries
+        $entries = asEntries
             .sort((a, b) => a.date.getTime() - b.date.getTime())
             .filter((entry) => entry.date.getTime() > Date.now());
     });
@@ -70,11 +69,11 @@
                 /></svg
             >
         </div>
-        {#if entries.length === 0}
+        {#if $entries.length === 0}
             <span class="loading loading-spinner loading-sm" />
         {/if}
         <ol>
-            {#each entries.slice(0, 5) as entry}
+            {#each $entries.slice(0, 5) as entry}
                 <li>
                     {truncateString(entry.binType, 20)}
                     <div

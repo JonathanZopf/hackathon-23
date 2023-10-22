@@ -5,6 +5,7 @@
   import IAQWidget from "$lib/widgets/IAQWidget.svelte";
   import JobsWidget from "$lib/widgets/JobsWidget.svelte";
   import DragAndDrop from "$lib/DragAndDrop.svelte";
+  import PublicTransportWidget from "$lib/widgets/PublicTransportWidget.svelte";
 </script>
 
 <div class="prose">
@@ -16,6 +17,7 @@
 
 <DragAndDrop
   components={[
+    PublicTransportWidget,
     GarbageWidget,
     RoadworksWidget,
     WeatherWidget,

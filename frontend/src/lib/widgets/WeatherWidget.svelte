@@ -37,7 +37,7 @@
       <span class="loading flex-1 loading-spinner loading-lg self-center" />
     {:else if error}
       <p class="p-5 text-red-600">{error.message}</p>
-    {:else if isInitialized}
+    {:else if $isInitialized}
       <div class="flex flex-row justify-start align-top">
         <div class="flex flex-col space-y-3 justify-center self-center">
           <p class="text-6xl font-semibold">
