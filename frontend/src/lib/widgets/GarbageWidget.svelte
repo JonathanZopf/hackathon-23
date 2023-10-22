@@ -2,12 +2,13 @@
     // @ts-ignore
     import ical from "ical.js";
     import { onMount } from "svelte";
+    import { base } from "$app/paths";
 
     type Entry = { binType: string; date: Date };
     let entries: Entry[] = [];
 
     onMount(async () => {
-        const response = await fetch("/garbage-dates.ics");
+        const response = await fetch(`${base}/garbage-dates.ics`);
         const icalString = await response.text();
 
         const parsed = ical.parse(icalString);
