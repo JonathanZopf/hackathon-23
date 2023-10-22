@@ -1,6 +1,5 @@
 import type { Jobs } from "$lib/types/jobs.td";
-import { readable, writable } from "svelte/store";
-import { get } from 'svelte/store';
+import { readable, writable, get } from "svelte/store";
 
 const baseURL = "https://rest.arbeitsagentur.de/jobboerse/jobsuche-service";
 
