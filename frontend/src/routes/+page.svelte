@@ -5,8 +5,8 @@
   import IAQWidget from "$lib/widgets/IAQWidget.svelte";
   import JobsWidget from "$lib/widgets/JobsWidget.svelte";
   import PublicTransportWidget from "$lib/widgets/PublicTransportWidget.svelte";
-  import DragAndDrop from "$lib/DragAndDrop.svelte";
   import NewsWidget from "$lib/widgets/NewsWidget.svelte";
+  import DragAndDrop from "$lib/DragAndDrop.svelte";
 
   let gridAddWidgetHandler: (widget: any) => void;
 
@@ -17,12 +17,13 @@
     Luftqualität: IAQWidget,
     Arbeitsmarkt: JobsWidget,
     ÖPNV: PublicTransportWidget,
-    NewsWidget: NewsWidget,
+    News: NewsWidget,
   } as const;
 
   function keys<T extends Record<any, any>>(obj: T): (keyof T)[] {
     return Object.keys(obj);
   }
+
 </script>
 
 <div class="drawer">
@@ -60,7 +61,7 @@
     </div>
     <div class="mx-4">
       <DragAndDrop
-        components={[]}
+        components={Object.values(supportedWidgets)}
         bind:addWidgetHandler={gridAddWidgetHandler}
       />
     </div>
@@ -86,3 +87,4 @@
     </div>
   </div>
 </div>
+

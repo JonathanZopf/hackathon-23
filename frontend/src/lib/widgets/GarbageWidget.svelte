@@ -5,7 +5,7 @@
   import { entries } from "$lib/stores/GarbageStore";
   import type { Entry } from "$lib/stores/GarbageStore";
   import { base } from "$app/paths";
-  
+
   onMount(async () => {
     const response = await fetch(`${base}/garbage-dates.ics`);
     const icalString = await response.text();
@@ -55,7 +55,7 @@
   }
 </script>
 
-<div class="card card-bordered bg-base-100">
+<div class="card card-bordered bg-gradient-to-b from-orange-300 to-orange-500">
   <div class="card-body">
     <div class="flex flex-row">
       <h2 class="card-title mr-auto">Abfallkalender</h2>

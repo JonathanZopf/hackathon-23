@@ -78,10 +78,10 @@
   onMount(fetchSensorData);
 </script>
 
-<div class="p-4 bg-base-100">
-  <div class="text-center">
-    <h2 class="text-2xl font-semibold">Air Quality</h2>
-    {#if airQuality !== null}
+<div class="card bg-gradient-to-b from-purple-300 to-purple-500">
+  <div class="card-body">
+    <h2 class="card-title mr-auto">Air Quality</h2>
+    {#if $airQuality !== null}
       <div class="flex items-center justify-center mt-4">
         <div
           class="radial-progress {$airQualityQuantifier.color} text-primary-content border-4"
