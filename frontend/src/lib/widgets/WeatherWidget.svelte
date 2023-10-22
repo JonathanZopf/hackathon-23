@@ -35,7 +35,7 @@
   }
 </script>
 
-<div class="card w-96 bg-base-100 shadow-xl">
+<div class="card bg-gradient-to-b from-blue-300 to-blue-500">
   <div class="card-body">
     <h2 class="card-title">Weather</h2>
     {#if isFetching}

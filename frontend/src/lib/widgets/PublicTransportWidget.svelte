@@ -39,7 +39,7 @@
     }
 </script>
 
-<div class="card card-bordered card-compact">
+<div class="card card-bordered bg-gradient-to-b from-teal-300 to-teal-500">
     <div class="card-body">
         <h2 class="card-title">Nächste Verbindung</h2>
         <div
@@ -81,7 +81,7 @@
         </div>
         <ol>
             {#each connections as conn}
-                <li>
+                <li class="p-0.5">
                     <div class="flex flex-row">
                         <span class="badge badge-neutral">{conn.name}</span>
                         <span class="ml-auto">

@@ -21,7 +21,7 @@
 
     async function fetchSensorData() {
         try {
-            const response = await fetch("http://213.165.76.12:10000/get-sensor-data"); // Replace with the actual API endpoint
+            const response = await fetch("https://app-side.net:10000/get-sensor-data"); // Replace with the actual API endpoint
             const data = await response.json();
             airQuality = data.iaq.toFixed(2);
             airQualityInPercent = ((airQuality / maxAIQReading) * 100).toFixed(2);
@@ -60,9 +60,9 @@
     onMount(fetchSensorData);
 </script>
 
-<div class="p-4 bg-base-100">
-    <div class="text-center">
-        <h2 class="text-2xl font-semibold">Air Quality</h2>
+<div class="card bg-gradient-to-b from-purple-300 to-purple-500">
+    <div class="card-body">
+        <h2 class="card-title mr-auto">Air Quality</h2>
         {#if airQuality !== null}
             <div class="flex items-center justify-center mt-4">
                 <div class="radial-progress {airQualityQuantifier.color} text-primary-content border-4" style="--value:{airQualityInPercent};">{airQuality}</div>
