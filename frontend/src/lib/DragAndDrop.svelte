@@ -29,6 +29,11 @@
         // Add the item to the drop target basket.
     }
 
+    function removeWidget(basketID: string) {
+        delete baskets[basketID];
+        baskets = baskets;
+    }
+
     export function addWidgetHandler(widget: any) {
         baskets[Math.random().toString()] = widget;
         baskets = baskets;
@@ -51,7 +56,7 @@
             on:dragenter={() => (currentDragOverID = basketID)}
             on:dragleavge={() => (currentDragOverID = null)}
         >
-            <WidgetContainer {basketID}>
+            <WidgetContainer on:close={() => removeWidget(basketID)} {basketID}>
                 <svelte:component this={baskets[basketID]} />
             </WidgetContainer>
         </div>
