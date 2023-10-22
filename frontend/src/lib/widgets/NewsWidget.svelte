@@ -24,7 +24,8 @@
 
 </script>
 
-<div class="w-96 ml-1">
+<div class="w-96 ml-1 card bg-gradient-to-b from-red-300 to-red-500">
+    <div class="card-body">
     <div class="flex flex-row align-center gap-5">
         <h2 class="card-title m-0">News</h2>
         <div class="badge badge-success float-rigt self-center">
@@ -55,5 +56,6 @@
         {:else}
             <p>No articles available for the selected theme.</p>
         {/if}
+    </div>
     </div>
 </div>

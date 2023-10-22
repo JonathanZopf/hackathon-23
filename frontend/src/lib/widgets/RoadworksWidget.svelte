@@ -36,10 +36,10 @@
   {#if fullSize}
     <p>Test</p>
   {:else}
-    <div class="card card-compact bg-slate-600 text-primary-content">
+    <div class="card bg-gradient-to-b from-yellow-300 to-yellow-500">
       <div class="card-body">
         <div class="flex flex-row gap-5">
-          <h2 class="card-title my-0">Roadwork</h2>
+          <h2 class="card-title mr-auto">Roadwork</h2>
           <select
             class="select select-sm align-middle flex-auto"
             bind:value={road}

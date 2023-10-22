@@ -46,7 +46,7 @@
   });
 </script>
 
-<div class="card w-96 bg-base-100 shadow-xl">
+<div class="card bg-gradient-to-b from-green-300 to-green-500">
   <div class="card-body">
     {#if steve}
       <div class="flex flex-row align-center gap-5">

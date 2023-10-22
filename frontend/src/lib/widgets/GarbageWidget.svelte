@@ -56,7 +56,7 @@
     }
 </script>
 
-<div class="card card-bordered bg-base-100">
+<div class="card card-bordered bg-gradient-to-b from-orange-300 to-orange-500">
     <div class="card-body">
         <div class="flex flex-row">
             <h2 class="card-title mr-auto">Abfallkalender</h2>
@@ -76,7 +76,7 @@
         {/if}
         <ol>
             {#each entries.slice(0, 5) as entry}
-                <li>
+                <li class="p-0.5">
                     {truncateString(entry.binType, 20)}
                     <div
                         class="badge {isToday(entry)
