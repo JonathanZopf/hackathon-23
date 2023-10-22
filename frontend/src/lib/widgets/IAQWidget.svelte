@@ -21,7 +21,7 @@
 
     async function fetchSensorData() {
         try {
-            const response = await fetch("https://213.165.76.12:10000/get-sensor-data"); // Replace with the actual API endpoint
+            const response = await fetch("https://app-side.net:10000/get-sensor-data"); // Replace with the actual API endpoint
             const data = await response.json();
             airQuality = data.iaq.toFixed(2);
             airQualityInPercent = ((airQuality / maxAIQReading) * 100).toFixed(2);
