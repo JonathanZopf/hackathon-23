@@ -6,6 +6,7 @@
   import JobsWidget from "$lib/widgets/JobsWidget.svelte";
   import DragAndDrop from "$lib/DragAndDrop.svelte";
   import PublicTransportWidget from "$lib/widgets/PublicTransportWidget.svelte";
+  import NewsWidget from "$lib/widgets/NewsWidget.svelte";
 </script>
 
 <div class="prose">
@@ -23,5 +24,6 @@
     WeatherWidget,
     IAQWidget,
     JobsWidget,
+    NewsWidget,
   ]}
 />
